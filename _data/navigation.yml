@@ -11,6 +11,7 @@
       url: /overview/governance/
     - title: Steering Group
       url: https://oceanexpert.org/group/472
+      external: true
 
 - title: Tools and Resources
   children:
@@ -23,6 +24,9 @@
       external: true
     - title: ODIS Catalog
       url: https://catalogue.odis.org/
+      external: true
+    - title: Search ODIS
+      url: https://search.odis.org/
       external: true
     - title: GitHub
       url: https://github.com/iodepo
