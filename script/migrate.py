@@ -386,13 +386,19 @@ def main():
     os.makedirs(pages_dir, exist_ok=True)
     os.makedirs(posts_dir, exist_ok=True)
 
-    # Clear previously generated posts so the script is re-runnable.
-    for f in os.listdir(posts_dir):
-        if f.endswith((".html", ".md")):
-            os.remove(os.path.join(posts_dir, f))
+    # The migration is complete and its output is now hand-edited, so by
+    # default this script will not clobber existing files. Pass --force to
+    # regenerate from the export (e.g. after a fresh export), accepting that
+    # any edits made since are lost.
+    force = "--force" in sys.argv
+    if force:
+        for f in os.listdir(posts_dir):
+            if f.endswith((".html", ".md")):
+                os.remove(os.path.join(posts_dir, f))
 
     n_pages = n_posts = 0
     skipped = []
+    kept = []
 
     for item in channel.findall("item"):
         ptype = item.findtext("wp:post_type", default="", namespaces=NS)
@@ -425,9 +431,12 @@ def main():
 
             slug = "index" if permalink == "/" else permalink.strip("/").replace("/", "-")
             dest = os.path.join(pages_dir, f"{slug}.html")
-            with open(dest, "w", encoding="utf-8") as fh:
-                fh.write(front_matter(fm) + body + "\n")
-            n_pages += 1
+            if os.path.exists(dest) and not force:
+                kept.append(os.path.relpath(dest, ROOT))
+            else:
+                with open(dest, "w", encoding="utf-8") as fh:
+                    fh.write(front_matter(fm) + body + "\n")
+                n_pages += 1
 
         else:
             date = item.findtext("wp:post_date", default="", namespaces=NS)[:10]
@@ -437,9 +446,12 @@ def main():
             if creator:
                 fm["author"] = yaml_quote(authors.get(creator, creator))
             dest = os.path.join(posts_dir, f"{date}-{slug}.html")
-            with open(dest, "w", encoding="utf-8") as fh:
-                fh.write(front_matter(fm) + body + "\n")
-            n_posts += 1
+            if os.path.exists(dest) and not force:
+                kept.append(os.path.relpath(dest, ROOT))
+            else:
+                with open(dest, "w", encoding="utf-8") as fh:
+                    fh.write(front_matter(fm) + body + "\n")
+                n_posts += 1
 
     # /news/ carries the author- and category-archive redirects.
     news = os.path.join(pages_dir, "news.html")
@@ -452,6 +464,8 @@ def main():
         with open(news, "w", encoding="utf-8") as fh:
             fh.write(src)
 
+    if kept:
+        print(f"Left untouched (already present; --force to regenerate): {len(kept)}")
     print(f"Pages migrated: {n_pages}")
     print(f"Posts migrated: {n_posts}")
     print(f"Media staged:   {len([v for v in media_map.values() if v.startswith('/assets')])}")
