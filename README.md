@@ -52,4 +52,11 @@ Set `ODIS_PROVENANCE` if that material lives elsewhere.
 
 Pushing to `main` builds and deploys via `.github/workflows/build.yml`.
 Repository Settings → Pages → Source must be set to **GitHub Actions**.
-The custom domain is pinned by `CNAME`.
+
+There is deliberately **no `CNAME` file**. A `CNAME` in the build artifact
+overwrites the custom domain on every deploy, which makes it impossible to
+preview at the `github.io` project URL before DNS is cut over. Set the custom
+domain in Settings → Pages instead; it persists across deploys.
+
+Until a custom domain is set, the site is served from a subpath
+(`/odis-website/`), which `configure-pages` passes to Jekyll as the baseurl.

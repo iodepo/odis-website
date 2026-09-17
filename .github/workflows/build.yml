@@ -46,7 +46,7 @@ jobs:
       - name: Check internal links
         # Not html-proofer: 5.2.2 reports "0 internal links" and exits 0 even on
         # a file with a deliberately broken link.
-        run: python3 script/check_links.py _site
+        run: python3 script/check_links.py _site "${{ steps.pages.outputs.base_path }}"
 
 
       # Uploaded even while private: it is a downloadable preview of the built

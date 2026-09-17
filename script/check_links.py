@@ -13,6 +13,11 @@ from html.parser import HTMLParser
 from urllib.parse import unquote, urlparse
 
 SITE = sys.argv[1] if len(sys.argv) > 1 else "_site"
+
+# When the site is served from a subpath (e.g. a project Pages URL like
+# iodepo.github.io/odis-website/), Jekyll prefixes every root-relative link
+# with that baseurl. Strip it before resolving against the output directory.
+BASE = (sys.argv[2] if len(sys.argv) > 2 else os.environ.get("SITE_BASEURL", "")).strip().rstrip("/")
 REFS = {"a": "href", "link": "href", "img": "src", "script": "src", "iframe": "src"}
 
 
@@ -37,6 +42,8 @@ def resolves(target, from_file):
         return True  # pure fragment, e.g. "#main"
 
     if path.startswith("/"):
+        if BASE and (path == BASE or path.startswith(BASE + "/")):
+            path = path[len(BASE):] or "/"
         full = os.path.join(SITE, path.lstrip("/"))
     else:
         full = os.path.join(os.path.dirname(from_file), path)
@@ -69,7 +76,8 @@ def main():
                 if not resolves(target, fp):
                     broken.append((os.path.relpath(fp, SITE), line, target))
 
-    print(f"Checked {checked} internal references across {pages} HTML files.")
+    note = f" (baseurl {BASE})" if BASE else ""
+    print(f"Checked {checked} internal references across {pages} HTML files{note}.")
 
     if broken:
         print(f"\n{len(broken)} broken:\n")
