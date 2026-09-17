@@ -361,14 +361,16 @@ a[data-lightbox] { display: inline-block; cursor: zoom-in; }
   margin: 0 0 0.75rem;
 }
 .cta a {
-  display: block;
-  padding: 0.75rem 1.25rem;
+  display: inline-block;
   background: var(--unesco-blue);
   color: var(--white);
-  border-radius: 4px;
+  border-radius: 8px;
   text-align: center;
   text-decoration: none;
   font-weight: 700;
+  width: auto; /* Fits text + padding naturally */
+  padding: 12px 12px; /* Vertical then horizontal padding */
+  margin: 4px 0; /* External spacing */
 }
 .cta a:hover { background: var(--accent-darkblue); }
 
