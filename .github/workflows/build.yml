@@ -28,11 +28,17 @@ jobs:
           ruby-version: "3.3"
           bundler-cache: true
 
+      # Only runs once the repo is public and Pages is enabled. While private
+      # on the Free plan there is no Pages site to configure, and this action
+      # hard-fails with "Get Pages site failed" if it cannot find one.
       - name: Configure Pages
         id: pages
+        if: github.event.repository.private == false
         uses: actions/configure-pages@v5
 
       - name: Build site
+        # base_path is empty for a custom apex domain, and also empty when the
+        # step above is skipped, so this is correct in both states.
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
@@ -43,6 +49,8 @@ jobs:
         run: python3 script/check_links.py _site
 
 
+      # Uploaded even while private: it is a downloadable preview of the built
+      # site, and deploy-pages needs it once Pages is turned on.
       - uses: actions/upload-pages-artifact@v3
 
   deploy:
