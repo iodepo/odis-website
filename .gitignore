@@ -1,0 +1,16 @@
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+vendor/
+.bundle/
+Gemfile.lock
+.DS_Store
+
+# --- Safety net ---
+# Migration source material lives outside this repo, in ../provenance/.
+# The raw WordPress export contains staff email addresses and this repo is
+# public, so these patterns stay here to catch an accidental copy-in.
+*.WordPress.*.xml
+ScreamingFrog_export-*.csv
+downloaded media/

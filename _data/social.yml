@@ -1,0 +1,10 @@
+# Footer social links, verified against live odis.org 2026-09-17.
+# LinkedIn corrected from http:// to https://.
+- name: X
+  url: https://twitter.com/iocunesco
+- name: Facebook
+  url: https://www.facebook.com/IocUnesco/
+- name: Instagram
+  url: https://www.instagram.com/ioc_unesco/
+- name: LinkedIn
+  url: https://www.linkedin.com/company/ioc-unesco

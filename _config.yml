@@ -1,0 +1,53 @@
+# ODIS.org — Jekyll site config
+# Built and deployed by GitHub Actions (see .github/workflows/build.yml),
+# so we are not bound by the GitHub Pages plugin allowlist or Jekyll 3.x.
+
+title: Ocean Data Information System
+description: >-
+  The Ocean Data and Information System (ODIS) is an IOC-UNESCO initiative
+  connecting ocean data and information systems worldwide.
+url: "https://odis.org"
+baseurl: ""
+lang: en-US
+
+# --- Build ---
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+sass:
+  style: compressed
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-redirect-from
+
+# Preserve the WordPress date-based post URLs exactly, so none of the
+# 10 migrated posts need a redirect.
+permalink: /:year/:month/:day/:title/
+
+include:
+  - _pages
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - README.md
+  - script
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+  - scope:
+      path: "_pages"
+    values:
+      layout: page
+
+feed:
+  path: /feed/index.xml

@@ -1,0 +1,20 @@
+<footer class="site-footer">
+  <div class="wrap">
+
+    <p class="site-footer__label">Follow Us</p>
+
+    <ul class="social">
+      {%- for s in site.data.social %}
+        <li>
+          <a href="{{ s.url }}" target="_blank" rel="noopener">
+            {%- include icons/{{ s.name | downcase }}.svg -%}
+            <span class="screen-reader-text">{{ s.name }}</span>
+          </a>
+        </li>
+      {%- endfor %}
+    </ul>
+
+    <p>&copy; <a href="https://www.ioc.unesco.org" target="_blank" rel="noopener">IOC-UNESCO</a> {{ site.time | date: "%Y" }}</p>
+
+  </div>
+</footer>

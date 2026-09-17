@@ -1,0 +1,30 @@
+# Mirrors the live odis.org nav, with the stale Outreach URL corrected.
+# Parent items with no `url` render as submenu toggles (live site uses "#").
+- title: News
+  url: /news/
+
+- title: About
+  children:
+    - title: ODIS Overview
+      url: /overview/
+    - title: Governance
+      url: /overview/governance/
+
+- title: Tools and Resources
+  children:
+    # Live nav points at /home/outreach-materials-odis/, which 301s.
+    # Corrected here; the old path is kept as a redirect on the page itself.
+    - title: Outreach Materials
+      url: /outreach-materials-odis/
+    - title: Architecture Docs
+      url: https://book.odis.org/
+      external: true
+    - title: ODIS Catalog
+      url: https://catalogue.odis.org/
+      external: true
+    - title: GitHub
+      url: https://github.com/iodepo
+      external: true
+
+- title: Contact
+  url: /contact-information/

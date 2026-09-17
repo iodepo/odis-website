@@ -1,0 +1,66 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let an in-progress production deploy finish; queue the next one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build site
+        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+        env:
+          JEKYLL_ENV: production
+
+      - name: Check internal links
+        # Not html-proofer: 5.2.2 reports "0 internal links" and exits 0 even on
+        # a file with a deliberately broken link.
+        run: python3 script/check_links.py _site
+
+
+      - uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    # Only deploy from main, never from a pull request.
+    #
+    # GitHub Pages is not available for private repositories on the Free plan,
+    # so deployment is skipped while this repo is private. Flipping it to
+    # public enables it automatically - no workflow change needed. Build and
+    # link checks still run either way, so the workflow stays green meanwhile.
+    if: >-
+      github.ref == 'refs/heads/main'
+      && github.event_name != 'pull_request'
+      && github.event.repository.private == false
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

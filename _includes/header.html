@@ -1,0 +1,41 @@
+<header class="site-header">
+  <div class="wrap site-header__inner">
+
+    <a class="site-logo" href="{{ '/' | relative_url }}">
+      <img src="{{ '/assets/img/combined_unesco_ioc_blue_eng.png' | relative_url }}"
+           alt="IOC-UNESCO logo" width="852" height="821">
+    </a>
+
+    <nav class="nav" aria-label="Main">
+      <ul>
+        {%- for item in site.data.navigation %}
+          {%- if item.children -%}
+            <li class="nav__item">
+              {%- comment -%}
+                Live site uses href="#" for these. A button is the correct
+                control for something that only opens a submenu.
+              {%- endcomment -%}
+              <button class="nav__toggle" aria-expanded="false">{{ item.title }}</button>
+              <ul class="nav__submenu">
+                {%- for child in item.children %}
+                  <li>
+                    <a href="{{ child.url | relative_url }}"
+                       {%- if child.external %} target="_blank" rel="noopener"{% endif %}
+                       {%- if page.url == child.url %} aria-current="page"{% endif %}>{{ child.title }}</a>
+                  </li>
+                {%- endfor %}
+              </ul>
+            </li>
+          {%- else -%}
+            <li class="nav__item">
+              <a href="{{ item.url | relative_url }}"
+                 {%- if item.external %} target="_blank" rel="noopener"{% endif %}
+                 {%- if page.url == item.url %} aria-current="page"{% endif %}>{{ item.title }}</a>
+            </li>
+          {%- endif -%}
+        {%- endfor %}
+      </ul>
+    </nav>
+
+  </div>
+</header>

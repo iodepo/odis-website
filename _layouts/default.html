@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en-US' }}">
+<head>
+  {%- include head.html -%}
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  {%- include header.html -%}
+
+  <main id="main" class="wrap content">
+    {{ content }}
+  </main>
+
+  {%- include footer.html -%}
+
+  <script src="{{ '/assets/js/nav.js' | relative_url }}" defer></script>
+  <script src="{{ '/assets/js/lightbox.js' | relative_url }}" defer></script>
+</body>
+</html>

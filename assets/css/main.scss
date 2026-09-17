@@ -1,0 +1,384 @@
+---
+# Front matter required so Jekyll processes this file.
+---
+
+/* ==========================================================================
+   ODIS.org — base styles
+   Colours: UNESCO Graphical Standards and Logo Toolkit (Sept 2021), pp. 8-9.
+   Type:    Arial. No webfont — DIN Pro is commercially licensed and cannot be
+            self-hosted in a public repo. Liberation Sans is metric-compatible
+            with Arial and is the standard Linux substitute.
+   ========================================================================== */
+
+:root {
+  /* Primary palette */
+  --unesco-blue:  #0069B4;
+  --black:        #000000;
+  --white:        #FFFFFF;
+
+  /* Secondary / accent. Never used for the logo block itself. */
+  --accent-red:        #e83f40;
+  --accent-yellow:     #fcc002;
+  --accent-green:      #67bb89;
+  --accent-darkblue:   #183254;
+
+  /* Neutrals (footer background sampled from the live site) */
+  --grey-bg:      #F1F4F6;
+  --grey-border:  #d9e0e6;
+  --text:         #1a1a1a;
+  --text-muted:   #5a6570;
+
+  --font-sans: Arial, "Liberation Sans", "Helvetica Neue", Helvetica, sans-serif;
+
+  /* Matches the live theme's --wp--style--global--content-size. */
+  --wrap: 1200px;
+  --gutter: 1rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* --- Layout ------------------------------------------------------------- */
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.content { padding-block: 2.5rem 4rem; }
+/* Contain floated asides so they cannot escape into the footer. */
+.content::after { content: ""; display: table; clear: both; }
+
+/* --- Type --------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  line-height: 1.25;
+  margin: 2rem 0 0.75rem;
+  color: var(--accent-darkblue);
+  font-weight: 700;
+}
+h1 { font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem); margin-top: 0; }
+h2 { font-size: clamp(1.35rem, 1.1rem + 1vw, 1.75rem); }
+h3 { font-size: 1.15rem; }
+
+p, ul, ol { margin: 0 0 1.1rem; }
+
+a { color: var(--unesco-blue); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+
+img { max-width: 100%; height: auto; }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--grey-border);
+  margin: 2.5rem 0;
+}
+
+/* --- Header ------------------------------------------------------------- */
+
+.site-header {
+  border-bottom: 1px solid var(--grey-border);
+  background: var(--white);
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 1rem;
+  flex-wrap: wrap;
+}
+/* Live site renders the combined IOC-UNESCO mark at height:100px. */
+.site-logo img { height: 100px; width: auto; display: block; }
+
+/* --- Navigation --------------------------------------------------------- */
+
+.nav ul { list-style: none; margin: 0; padding: 0; }
+
+.nav > ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1.25rem;
+}
+
+.nav a,
+.nav__toggle {
+  display: inline-block;
+  padding: 0.5rem 0.25rem;
+  color: var(--text);
+  font-size: 0.95rem;
+  text-decoration: none;
+  background: none;
+  border: 0;
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.nav a:hover,
+.nav a[aria-current="page"],
+.nav__toggle:hover { color: var(--unesco-blue); }
+.nav a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--unesco-blue); }
+
+.nav__item { position: relative; }
+
+.nav__submenu {
+  margin: 0;
+  padding: 0.35rem 0;
+  min-width: 15rem;
+}
+
+@media (min-width: 48em) {
+  .nav__submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 20;
+    background: var(--white);
+    border: 1px solid var(--grey-border);
+    border-radius: 6px;
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.09);
+    display: none;
+  }
+  .nav__item:hover .nav__submenu,
+  .nav__item:focus-within .nav__submenu,
+  .nav__item.is-open .nav__submenu { display: block; }
+  .nav__submenu a { display: block; padding: 0.45rem 1rem; white-space: nowrap; }
+}
+
+@media (max-width: 47.99em) {
+  .nav > ul { flex-direction: column; align-items: flex-start; width: 100%; }
+  .nav__submenu { padding-left: 1rem; }
+}
+
+/* --- Footer ------------------------------------------------------------- */
+
+.site-footer {
+  background: var(--grey-bg);
+  border-top: 1px solid var(--grey-border);
+  margin-top: 4rem;
+  padding-block: 2rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+.site-footer__label { margin: 0 0 0.6rem; }
+
+.social {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+}
+.social a {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--accent-darkblue);
+  border-radius: 50%;
+}
+.social a:hover { color: var(--unesco-blue); background: rgb(0 105 180 / 0.08); }
+.social svg { width: 22px; height: 22px; fill: currentColor; }
+
+/* --- Post/news lists ---------------------------------------------------- */
+
+.post-list { list-style: none; margin: 0; padding: 0; }
+.post-list > li {
+  padding-block: 1.25rem;
+  border-bottom: 1px solid var(--grey-border);
+}
+.post-list h2 { margin: 0 0 0.25rem; font-size: 1.15rem; }
+.post-list h2 a { text-decoration: none; }
+.post-list h2 a:hover { text-decoration: underline; }
+
+.post-meta {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: 0 0 0.4rem;
+}
+
+/* --- Utilities ---------------------------------------------------------- */
+
+.screen-reader-text {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--unesco-blue);
+  color: var(--white);
+  padding: 0.6rem 1rem;
+  z-index: 100;
+}
+.skip-link:focus { left: 0; }
+
+:focus-visible { outline: 3px solid var(--unesco-blue); outline-offset: 2px; }
+
+/* Responsive video wrapper, replacing the inline float used on WordPress. */
+.video-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  margin: 0 0 1.5rem;
+}
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+@media (min-width: 48em) {
+  .video-embed--float-right {
+    float: right;
+    width: 400px;
+    padding-bottom: 0;
+    height: auto;
+    margin: 0 0 1rem 1.5rem;
+  }
+  .video-embed--float-right > .video-embed__ratio {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+  }
+}
+
+/* --- Migrated content patterns ------------------------------------------ */
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: 2rem;
+  align-items: start;
+}
+
+blockquote {
+  margin: 0 0 1.5rem;
+  padding-left: 1.25rem;
+  border-left: 4px solid var(--unesco-blue);
+  color: var(--text);
+}
+
+figure { margin: 0 0 1.5rem; }
+figure img { display: block; }
+figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.file-link a {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  background: var(--unesco-blue);
+  color: var(--white);
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 700;
+}
+.file-link a:hover { background: var(--accent-darkblue); }
+.file-link span { font-weight: 400; opacity: 0.85; }
+
+/* --- Lightbox ------------------------------------------------------------
+   Replaces the Simplelightbox plugin. Exactly one image on the site uses it,
+   so this is a <dialog> rather than a library: Escape-to-close and focus
+   trapping come from the browser instead of ~30KB of JavaScript.
+   ------------------------------------------------------------------------ */
+
+a[data-lightbox] { display: inline-block; cursor: zoom-in; }
+
+.lightbox {
+  border: 0;
+  padding: 0;
+  max-width: 92vw;
+  max-height: 92vh;
+  background: transparent;
+  overflow: visible;
+}
+.lightbox::backdrop { background: rgb(0 0 0 / 0.8); }
+.lightbox img {
+  display: block;
+  max-width: 92vw;
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+}
+.lightbox__close {
+  position: absolute;
+  top: -0.75rem;
+  right: -0.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--black);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* --- Homepage ------------------------------------------------------------
+   Live site floats the video and call-to-action buttons to the right of the
+   body text, with inline styles. Rebuilt as a class-driven float that stacks
+   on narrow screens.
+   ------------------------------------------------------------------------ */
+
+.home-lede {
+  font-size: 1.15rem;
+  max-width: 60ch;
+}
+
+.home-aside {
+  margin: 0 0 1.5rem;
+}
+
+.home-aside .video-embed { margin-bottom: 1rem; }
+
+.cta {
+  margin: 0 0 0.75rem;
+}
+.cta a {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  background: var(--unesco-blue);
+  color: var(--white);
+  border-radius: 4px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 700;
+}
+.cta a:hover { background: var(--accent-darkblue); }
+
+@media (min-width: 48em) {
+  .home-aside {
+    float: right;
+    width: 400px;
+    max-width: 45%;
+    margin: 0 0 1.5rem 2.5rem;
+  }
+  /* The blockquote flows beside the floated aside rather than clearing it. */
+  .home-aside + blockquote { overflow: visible; }
+}
