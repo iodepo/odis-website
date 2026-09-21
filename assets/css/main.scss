@@ -41,6 +41,10 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   background: var(--white);
   color: var(--text);
   font-family: var(--font-sans);
@@ -57,7 +61,11 @@ body {
   padding-inline: var(--gutter);
 }
 
-.content { padding-block: 2.5rem 4rem; }
+/* Grow so the footer stays at the bottom of short pages. */
+.content {
+  flex: 1 0 auto;
+  padding-block: 2.5rem 4rem;
+}
 /* Contain floated asides so they cannot escape into the footer. */
 .content::after { content: ""; display: table; clear: both; }
 
